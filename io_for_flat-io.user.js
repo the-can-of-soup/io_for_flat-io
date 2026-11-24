@@ -43,12 +43,85 @@
 
         async function importScore(exportedData) {
             // Async: Import a score that was exported with `exportScore` and save it to the cloud immediately.
+            // This function imitates the internal function `flatRt._save`.
 
             // TODO <====================================================================================================================
-            throw 'TODO';
+            throw 'TODO'; // Todo: check if this works and reload tab after a successful save
 
-            // Useful information:
-            // `flatData.data` appears to have similar to the result of `flatData.getRevision`
+            if (flatRt.saving || flatRt.savingHandler) throw 'A save is in progress.';
+            if (await flatRt.isAwaitingSaveRevision()) throw 'The previous save has not received its revision information yet.';
+
+            flatRt.saving = true;
+            const localRevId = flatRt.localRevisionId;
+
+            try {
+                const ackGroups = await flatRt.getAckGroups();
+                flatRt.emit('save');
+                
+                await flatData.saveNewRevision(
+                    exportedData.data,
+                    ackGroups.map((ackGroup) => {
+                        if (ackGroup === null) return null;
+                        let {
+                            actions,
+                            revertHistory,
+                            logs,
+                        } = ackGroup;
+                        const {
+                            parentId,
+                            groupId,
+                            type,
+                            hash,
+                            userId,
+                            scoreId,
+                            revisionId,
+                        } = ackGroup;
+                        
+                        actions = actions ? actions.slice() : [];
+                        revertHistory = revertHistory ? revertHistory.slice() : [];
+                        logs = logs ? logs.slice() : [];
+                        
+                        return {
+                            parentId,
+                            hash,
+                            type,
+                            actions,
+                            groupId,
+                            userId,
+                            logs,
+                            scoreId,
+                            revisionId,
+                            revertHistory,
+                        };
+                    }),
+                    {
+                        autosave: false,
+                        context: 'deviceManualSave',
+                        override: false, // TODO: Maybe true? Analyze behavior of `override` in `flatRt._save`.
+                        parentRevisionId: localRevId,
+                        deviceId: flatRt.deviceId,
+                        deviceType: flatRt.deviceType,
+                        instanceId: flatRt.instanceId,
+                    },
+                );
+
+                if (ackGroups.length > 0) {
+                    flatRt.awaitSaveRevision(ackGroups[ackGroups.length - 1].groupId);
+                }
+
+                flatRt.emit('saveDone');
+
+            } catch (err) {
+                flatRt.saving = false;
+                if (flatRt.unannouncedRevisionId === localRevId) {
+                    flatRt.rejoinUnannouncedRevision();
+                }
+
+                throw err;
+            }
+
+            flatRt.saving = false;
+            flatRt.runSavingHandler();
         }
 
 
