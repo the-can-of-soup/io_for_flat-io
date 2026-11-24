@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [WIP] IO for Flat.io
 // @namespace    https://github.com/the-can-of-soup
-// @version      0.0.0
+// @version      0.1.0
 // @description  Adds the ability to import/export Flat.io scores to a file for local storage or manipulation.
 // @author       the-can-of-soup
 // @match        https://flat.io/score/*
@@ -31,7 +31,8 @@
             const data = flatAdagioData.exportData(); // Old async version: await flatData.getRevision(revisionId)
 
             return {
-                _: 'Exported with Soup\'s "IO for Flat.io" userscript.',
+                _: 'Exported with Soup\'s "IO for Flat.io" userscript. GitHub: https://github.com/the-can-of-soup/io_for_flat-io',
+                formatVersion: 0,
                 exportTimeMs: Date.now(),
                 scoreId,
                 revisionId,
