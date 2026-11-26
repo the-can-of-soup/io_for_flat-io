@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [WIP] IO for Flat.io
 // @namespace    https://github.com/the-can-of-soup
-// @version      1.0.0
+// @version      1.0.1
 // @description  Adds the ability to import/export Flat.io scores to a file for local storage or manipulation.
 // @author       the-can-of-soup
 // @match        https://flat.io/score/*
@@ -385,6 +385,7 @@
         console.log('[IO for Flat.io] Loaded; interfaces are exposed at `flatIoIO`.');
     }
 
+    
     console.log('[IO for Flat.io] Waiting for `flatEditorScoreData` and header elements...');
     const initInterval = setInterval(main, 1000);
 })();
