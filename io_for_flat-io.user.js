@@ -121,7 +121,7 @@
                 }
 
                 flatRt.emit('saveDone');
-                // flatRt.emit('completeRedraw'); // This line is not in `flatRt._save`, but it would force a full redraw
+                flatRt.emit('completeRedraw'); // This line is not in `flatRt._save`; often this is emitted automatically, but it seems to be unpredictable
 
             } catch (err) {
                 flatRt.saving = false;
