@@ -1,6 +1,6 @@
 # IO for Flat.io
 
-Userscript that adds the ability to import/export [Flat.io](https://flat.io/) scores to a file for local storage or manipulation. One use case of this is storing sheet music locally so you don't have to deal with the cloud storage limits!
+Userscript that adds the ability to import/export [Flat.io](https://flat.io/) scores to a file for local storage or manipulation. You can use this to store sheet music locally so you don't have to deal with the cloud storage limits!
 
 ![Import and export buttons added to the Flat.io editor](static/io_for_flat.io_showcase_2.png)
 
