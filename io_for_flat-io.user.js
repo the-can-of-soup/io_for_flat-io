@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IO for Flat.io
 // @namespace    https://github.com/the-can-of-soup
-// @version      1.0.2
+// @version      1.0.3
 // @description  Adds the ability to import/export Flat.io scores to a file for local storage or manipulation.
 // @author       the-can-of-soup
 // @match        https://flat.io/score/*
